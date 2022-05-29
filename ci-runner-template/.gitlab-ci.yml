@@ -1,0 +1,27 @@
+stages:
+  - build
+
+build:
+  stage: build
+  image: docker/compose:alpine-1.29.2
+
+  variables:
+    FF_NETWORK_PER_BUILD: 1
+    POSTGRES_DB: $POSTGRES_DB
+    POSTGRES_USER: $POSTGRES_USER
+    POSTGRES_PASSWORD: $POSTGRES_PASSWORD
+  tags:
+    - docker_runner
+  before_script:
+  - docker-compose version
+
+  script:
+    - docker build -t myapp:stage .
+    - docker-compose up --exit-code-from app
+  
+  after_script:
+  - docker container prune -f
+  - docker image rm myapp:stage
+
+#  rules:
+#    - if: $CI_PIPELINE_SOURCE == 'merge_request_event'
