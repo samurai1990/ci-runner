@@ -1,0 +1,7 @@
+Go to config ruuner file:
+/etc/gitlab-runner/config.toml
+
+set config this file:
+
+volumes = ["/var/run/docker.sock:/var/run/docker.sock","/cache"]
+extra_hosts = ["{gitlab_name}:x.x.x.x"]
